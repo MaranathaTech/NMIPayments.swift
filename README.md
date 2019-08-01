@@ -9,6 +9,7 @@ Import NMIPayments.swift into your Xcode project.
 Create transactions using:
 ```
 let nmiPayment = NMIPayments()
+
 nmiPayment.setLogin(username: "demo", password: "password");
 
 nmiPayment.setBilling(firstname: "John",lastname: "Smith",company: "Acme, Inc.",address1: "123 Main St",address2: "Suite 200", city: "Beverly Hills", state: "CA",zip: "90210",country: "US",phone: "555-555-5555",fax: "555-555-5556",email: "support@example.com", website: "www.example.com");
