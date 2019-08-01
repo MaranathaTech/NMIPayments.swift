@@ -16,6 +16,7 @@ nmiPayment.setBilling(firstname: "John",lastname: "Smith",company: "Acme, Inc.",
 nmiPayment.setShipping(firstname: "Mary",lastname: "Smith",company: "na",address1: "124 Shipping Main St",address2: "Suite Ship", city: "Beverly Hills", state: "CA",zip: "90210",country: "US",email: "support@example.com");
 
 nmiPayment.setOrder(orderid: "1234",orderdescription: "Big Order",tax: "1", shipping: "2", ponumber: "PO1234",ipaddress: "65.192.14.10");
+
 nmiPayment.doSale(amount: 50.00, ccnumber: "4111111111111111", ccexp: "1010", cvv: "123") { (result) in
   print(result)
 }
