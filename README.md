@@ -1,6 +1,5 @@
 # Swift NMI Payments
-Swift class for processing NMI Gateway payments
-
+Swift class for processing NMI Gateway payments. 
 
 ## Getting Started
 
