@@ -1,6 +1,5 @@
 //
 //  NMIPayments.swift
-//  Wrath and Grace
 //
 //  Created by Ernie Lail on 8/1/19.
 //  Copyright © 2019 Development. All rights reserved.
