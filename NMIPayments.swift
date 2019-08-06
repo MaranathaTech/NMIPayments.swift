@@ -1,5 +1,6 @@
 //
 //  NMIPayments.swift
+//  Wrath and Grace
 //
 //  Created by Ernie Lail on 8/1/19.
 //  Copyright © 2019 Development. All rights reserved.
@@ -67,11 +68,15 @@ class NMIPayments: NSObject {
     
     // Transaction Functions
     
-    func doSale(amount:Double, ccnumber:String, ccexp:String, cvv:String, with completion:@escaping ([String:Any]) -> () ){
+    func doSale(amount:Double, ccnumber:String, ccexp:String, cvv:String, with completion:@escaping (String) -> () ){
+        
+        print(self.login["username"])
     
     var query  = [String:String]();
     // Login Information
         query["username"] = (self.login["username"]) ;
+        print(query["username"])
+
     query["password"] = (self.login["password"]) ;
     // Sales Information
     query["ccnumber"] = (ccnumber) ;
@@ -111,12 +116,19 @@ class NMIPayments: NSObject {
     query["shipping_country"] = (self.shipping["country"]) ;
     query["shipping_email"] = (self.shipping["email"]) ;
     query["type"] = "sale";
+        
+        print("Doing Sale")
+        
     self._doPost(query: query, with: { (result) in
+       
+        print("results received")
+        
         completion(result);
+        
         })
     }
     
-    func doAuth(amount:Double, ccnumber:String, ccexp:String, cvv:String, with completion:@escaping ([String:Any]) -> () ){
+    func doAuth(amount:Double, ccnumber:String, ccexp:String, cvv:String, with completion:@escaping (String) -> () ){
     
     var query  = [String:String]();
     // Login Information
@@ -165,7 +177,7 @@ class NMIPayments: NSObject {
         })
     }
     
-    func doCredit(amount:Double, ccnumber:String, ccexp:String, with completion:@escaping ([String:Any]) -> () ){
+    func doCredit(amount:Double, ccnumber:String, ccexp:String, with completion:@escaping (String) -> () ){
     
     var query  = [String:String]();
     // Login Information
@@ -202,7 +214,7 @@ class NMIPayments: NSObject {
         })
     }
     
-    func doOffline(authorizationcode:String, amount:Double, ccnumber:String, ccexp:String, with completion:@escaping ([String:Any]) -> () ){
+    func doOffline(authorizationcode:String, amount:Double, ccnumber:String, ccexp:String, with completion:@escaping (String) -> () ){
     
     var query  = [String:String]();
     // Login Information
@@ -251,7 +263,7 @@ class NMIPayments: NSObject {
         })
     }
     
-    func doCapture(transactionid:String, amount:Double, with completion:@escaping ([String:Any]) -> () ){
+    func doCapture(transactionid:String, amount:Double, with completion:@escaping (String) -> () ){
     
     var query  = [String:String]();
     // Login Information
@@ -268,7 +280,7 @@ class NMIPayments: NSObject {
         })
     }
     
-    func doVoid(transactionid:String, with completion:@escaping ([String:Any]) -> () ){
+    func doVoid(transactionid:String, with completion:@escaping (String) -> () ){
     
     var query  = [String:String]();
     // Login Information
@@ -282,7 +294,7 @@ class NMIPayments: NSObject {
         })
     }
     
-    func doRefund(transactionid:String, amount:Double, with completion:@escaping ([String:Any]) -> () ){
+    func doRefund(transactionid:String, amount:Double, with completion:@escaping (String) -> () ){
     
     var query  = [String:String]();
     // Login Information
@@ -300,22 +312,25 @@ class NMIPayments: NSObject {
     }
     
     
-    func _doPost(query:[String:String], with completion:@escaping ([String:Any]) -> () ){
+    func _doPost(query:[String:String], with completion:@escaping (String) -> () ){
+        print("Posting to NMI server")
         
-        var result = [String:Any]()
+        print(query)
+        
+        let headers:HTTPHeaders = ["Content-Type": "application/x-www-form-urlencoded"]
         
         //url request to woocommerce API to see if we have stock
-        Alamofire.request("https://secure.networkmerchants.com/api/transact.php", method: .post, parameters: query, encoding: JSONEncoding.default,headers: nil).responseJSON(completionHandler: { (response:DataResponse<Any>) in
+        Alamofire.request("https://secure.networkmerchants.com/api/transact.php", method: .post, parameters: query, headers: headers).responseString(completionHandler: { (response:DataResponse<String>) in
+            
+            print(response.result)
             
             if let data = response.result.value{
-                result = data as! [String : Any];
-                completion(result);
-                print(result)
+                print(data)
+                completion(data);
             }
             else{
-                result = ["Error":"No Response From Server"];
-                completion(result);
-                print(result)
+                print("Error - No Response From Server")
+                completion("Error - No Response From Server");
             }
         })
         
@@ -327,12 +342,3 @@ class NMIPayments: NSObject {
     
     
 }
-
-
-
-
-
-
-
-
-
